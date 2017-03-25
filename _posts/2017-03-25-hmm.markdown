@@ -1,6 +1,6 @@
 ---
 layout:     notebook
-title:      New Notebook
+title:      New Notebook33
 author:     Etienne Roesch
 tags: 		jupyter workflows template
 subtitle:   Showcasing Jupyter uNotebook Translator Layout
