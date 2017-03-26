@@ -8,7 +8,8 @@ url: "https://eroesch.github.io"
 # Secondary Parameters
 baseurl: "/project-pages"
 header-img: img/home-bg.png
-headercolor: "#FFFFFF"
+headercolor: "#000000"
+#headercolor: "#FFFFFF"
 logo: /project-pages/img/logos/Project-Pages-New-Logo-Inverted.png
 
 # Tertiary Parameters
