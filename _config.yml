@@ -1,19 +1,18 @@
 # Site settings
 title: "Welcome!"
-description: "dr. Etienne B. Roesch"
+#description: "dr. Etienne B. Roesch"
 url: "https://eroesch.github.io"
-
 
 
 
 # Secondary Parameters
 baseurl: "/project-pages"
-header-img: img/home-bg.jpg
+header-img: img/home-bg.png
 headercolor: "#FFFFFF"
 logo: /project-pages/img/logos/Project-Pages-New-Logo-Inverted.png
 
 # Tertiary Parameters
-github_username:  projectpages
+github_username:  eroesch
 project_repository: project-pages
 disqus_shortname: project-pages
 g-analytics: UA-75881392-1
@@ -36,7 +35,7 @@ defaults:
       type: "pages"
     values:
       layout: "project"
-      header-img: "img/home-bg.jpg"
+      header-img: "img/home-bg.png"
 
 # Prose Settings
 prose:
