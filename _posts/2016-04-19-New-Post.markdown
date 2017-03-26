@@ -2,7 +2,7 @@
 layout:     post
 title:      New Post
 author:     Etienne Roesch
-header-img:	img/home-bghh.jpg
+header-img:     img/home-bghh.jpg
 tags: 		post template
 subtitle:  	Some Short Description of Post
 category:  project1
