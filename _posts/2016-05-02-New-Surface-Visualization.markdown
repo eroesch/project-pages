@@ -2,7 +2,7 @@
 slideinit: "<section markdown=\"1\" data-background=\"http://projectpages.github.io/project-pages/img/slidebackground.png\"><section markdown=\"1\">"
 vertical: "</section><section markdown=\"1\">"
 horizontal: "</section></section><section markdown=\"1\" data-background=\"http://projectpages.github.io/project-pages/img/slidebackground.png\"><section markdown=\"1\">"
-layout: slide
+layout: post
 title: New Surface Visualization
 author: Ahmet Cecen
 tags: plysurface visualization template
