@@ -1,22 +1,22 @@
 # Site settings
-title: Project Pages
-description: "An Integrated Scientific Blogging Template"
+title: "Welcome!"
+#description: "dr. Etienne B. Roesch"
 url: "https://eroesch.github.io"
-
 
 
 
 # Secondary Parameters
 baseurl: "/project-pages"
-header-img: img/home-bg.jpg
-headercolor: "#FFFFFF"
+header-img: img/home-bg.png
+headercolor: "#000000"
+#headercolor: "#FFFFFF"
 logo: /project-pages/img/logos/Project-Pages-New-Logo-Inverted.png
 
 # Tertiary Parameters
-github_username:  projectpages
+github_username:  eroesch
 project_repository: project-pages
 disqus_shortname: project-pages
-g-analytics: UA-75881392-1
+g-analytics: UA-4147363-5 #UA-75881392-1
 altmetric: true
 
 # Build settings
@@ -36,7 +36,7 @@ defaults:
       type: "pages"
     values:
       layout: "project"
-      header-img: "img/home-bg.jpg"
+      header-img: "img/home-bg.png"
 
 # Prose Settings
 prose:
