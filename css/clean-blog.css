@@ -87,7 +87,8 @@ hr.small {
   }
   .navbar-custom .nav li a:hover,
   .navbar-custom .nav li a:focus {
-    color: rgba(255, 255, 255, 0.8);
+    /*color: rgba(255, 255, 255, 0.8);*/
+    text-decoration: underline;
   }
 }
 @media only screen and (min-width: 1170px) {
@@ -175,7 +176,7 @@ hr.small {
 @media only screen and (min-width: 768px) {
   .intro-header .site-heading h1,
   .intro-header .page-heading h1 {
-    font-size: 80px;
+    font-size: 50px;
   }
 }
 .intro-header .post-heading h1 {
@@ -366,7 +367,7 @@ form .row:first-child .floating-label-form-group {
 }
 .pager li > a:hover,
 .pager li > a:focus {
-  color: white;
+  color: red;
   background-color: #0085a1;
   border: 1px solid #0085a1;
 }
