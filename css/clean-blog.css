@@ -30,6 +30,9 @@ h6 {
   font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: 800;
 }
+h2, .h2 {
+    font-size: 25px;
+}
 a {
   color: #404040;
 }
