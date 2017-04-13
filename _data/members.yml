@@ -1,5 +1,20 @@
 # Members
 
+- name: dr. Etienne B. Roesch
+  role: Associate Professor of Cognitive Science
+  img: https://avatars3.githubusercontent.com/u/1738143?v=3&s=460
+  email: etienne.roesch_youknowwhattoputhere_gmail.com
+  twitter_username: etienneroesch
+  facebook_username: #eroesch
+  linkedin_username: etienneroesch
+  github_username: eroesch
+  gplus_username: #EtienneRoesch
+  orcid_username: 0000-0002-8913-4173
+  www: http://etienneroes.ch
+  bio: <br/><br/>I am a tenured Associate Professor of Cognitive Science, at the University of Reading, UK, affiliated to the Centre for Integrative Neuroscience and Neurodynamics, and the School of Psychology and Clinical Language Sciences. I conduct and supervise research combining empirical work and mathematical modelling, at both cellular and systemic levels, to understand how interaction with the environment supports experience, in vision and touch. We use psychophysics, electrophysiology and neuroimaging methods, as well as mathematical modelling.<br/><br/>Before starting in Reading as a Lecturer, I was a postdoctoral Research Assistant at Goldsmiths Univ. London, where I developed a theoretical framework for information processing based on interaction, as an alternative to computationalism. Before that, I was the recipient of a Fellowship for Prospective Researchers, awarded by Swiss National Science Foundation, which I used to join Prof. Murray Shanahan's Cognitive Robotics group at Imperial College London. During this time, I contributed to the development of NeMo, a modelling platform for spiking neurons using GPUs. <br/><br/>I completed my doctoral studies at the Swiss Centre for Affective Sciences, at the University of Geneva, under the supervision of Prof. Klaus Scherer and Prof. David Sander. My research aimed at characterizing the unfolding of attentional resources to the processing of emotion-laden information. I employed a number of experimental paradigms, including the modulation of the attentional blink, and tailored psychophysical paradigms to assess the minimum display duration necessary to make a correct gender decision on emotional faces. Before my doctoral studies, I was an RA in Prof. Diego Pizzagalli's Affective Neuroscience Lab, at Harvard University. And before that, I completed studies in cognitive science (BSc, MSc), and computer science (BSc). <br/><br/>I have reviewed scientific papers for over 30 journals, and 10 national and international funding councils. At this point in time, I am being very selective and mostly review for funding bodies. 
+  url: http://etienneroes.ch/
+  visible: true
+
 - name: Ahmet Cecen
   role: Data Scientist / Materials Informatics
   img: https://avatars1.githubusercontent.com/u/7231251?v=3&s=460
@@ -7,7 +22,7 @@
   gplus: https://plus.google.com/+AhmetCecen-GPlus
   bio: Ahmet Cecen is currently pursuing a PhD in Computational Science and Engineering at Georgia Institute of Technology.  He earned a bachelor’s degree in Mechanical Engineering at Drexel University. Ahmet has been doing research in the fields of computational materials science and materials informatics for the past 6 years, throughout his undergraduate and graduate studies. His current research focus is on leveraging statistical analysis and machine learning tools to solve big data analytics problems in materials science. 
   url: http://ahmetcecen.github.io/
-  visible: true
+  visible: false
    
 - name: David Brough
   role: Data Scientist / Materials Informatics
@@ -15,7 +30,7 @@
   github: davidbrough1
   bio: David is a PhD student in the School of Computational Science and Engineering at Georgia Institute of Technology. David earned a Master’s degree in experimental condensed matter physics at Brigham Young University where he fabricated and characterized thin-films and carbon nanotubes used in nanostructured high capacity battery electrodes and in X-ray windows. As an undergraduate, David studied theoretical physics and researched the evolution of chaotic systems using neural networks at Westminster College. He is a trainee in the NSF IGERT FLAMEL program, and one of the lead developers on PyMKS materials informatics toolkit.
   url: http://davidbrough.net 
-  visible: true
+  visible: false
   
 - name: Surya R. Kalidindi
   role: Materials Informatics
