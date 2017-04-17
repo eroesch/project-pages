@@ -22,16 +22,55 @@
                     <a href="{{ site.baseurl }}/">Home</a>
                 </li>
                 {% endcomment %}
-				{% for page in site.pages %}{% if page.url contains "projects/" %}{% if page.title %}
+                
                 <li>
-                    <a href="{{ page.url | prepend: site.baseurl }}">{{ page.title }}</a>
+                	<a href="who/">Who?</a>
                 </li>
-                {% endif %}{% endif %}{% endfor %}
-                {% for page in site.pages %}{% if page.url contains "projects/" %}{% else %}{% if page.title %}
+                
+					<li>
+					<div class="dropdown">
+						<button class="dropbtn"><a href="" >#myopenresearch</a></button>
+						<div class="dropdown-content">
+						{% for page in site.pages %}
+							{% if page.url contains "projects/" %}
+								{% if page.title %}
+								<a href="{{ page.url | prepend: site.baseurl }}">{{ page.title }}</a>
+								{% endif %}
+							{% endif %}
+						{% endfor %}
+						</div>
+                	</div>
+                	</li>
+                
                 <li>
-                    <a href="{{ page.url | prepend: site.baseurl }}">{{ page.title }}</a>
+                	<a href="search/">Tags</a>
                 </li>
-                {% endif %}{% endif %}{% endfor %}
+                
+{% comment %}
+				{% for page in site.pages %}
+					{% if page.url contains "projects/" %}
+						{% if page.title %}
+							<li>
+								<a href="{{ page.url | prepend: site.baseurl }}">{{ page.title }}</a>
+							</li>
+						{% endif %}
+               		{% endif %}
+               	{% endfor %}
+{% endcomment %}
+               
+{% comment %}
+                {% for page in site.pages %}
+                	{% if page.url contains "projects/" %}
+                	{% else %}
+                		{% if page.title %}
+							<li>
+								<a href="{{ page.url | prepend: site.baseurl }}">{{ page.title }}</a>
+							</li>
+                		{% endif %}
+                	{% endif %}
+                {% endfor %}
+{% endcomment %}
+           
             </ul>
         </div>
         <!-- /.navbar-collapse -->
