@@ -29,7 +29,11 @@
                 
 					<li>
 					<div class="dropdown">
-						<button class="dropbtn"><a href="" >#myopenresearch</a></button>
+						<button class="dropbtn">
+						<a href="{{ '/myopenresearch/' | prepend: site.baseurl }}">
+						#myopenresearch
+						</a>
+						</button>
 						<div class="dropdown-content">
 						{% for page in site.pages %}
 							{% if page.url contains "projects/" %}
