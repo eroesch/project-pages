@@ -24,7 +24,7 @@
                 {% endcomment %}
                 
                 <li>
-                	<a href="who/">Who?</a>
+                	<a href="{{ '/who/' | prepend: site.baseurl }}">Who?</a>
                 </li>
                 
 					<li>
@@ -42,10 +42,9 @@
                 	</div>
                 	</li>
                 
-                <li>
-                	<a href="search/">Tags</a>
-                </li>
-                
+                	<li>
+                		<a href="{{ '/search/' | prepend: site.baseurl }}">Table of content</a>
+                	</li>
 {% comment %}
 				{% for page in site.pages %}
 					{% if page.url contains "projects/" %}
