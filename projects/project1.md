@@ -1,7 +1,7 @@
 ---
 layout: project
 title: "Coupled EEG-fMRI (BRAINS)"
-description: "We are both very critical and hopefully of traditional neuroimaging techniques, and develop the new generation of analyses methods."
+description: "I am both very critical and hopeful of traditional neuroimaging techniques, and spend a good chunk of time developing a new generation of analyses methods based on couple EEG and fMRI."
 header-img: "img/home-bg.jpg"
 category: project1
 ---
