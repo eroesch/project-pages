@@ -11,14 +11,14 @@ baseurl: ""
 header-img: img/home-bg.png
 headercolor: "#000000"
 #headercolor: "#FFFFFF"
-logo: project-pages/img/logos/tilde.png
+logo: img/logos/tilde.png
 
 # Tertiary Parameters
 github_username:  eroesch
 twitter_username: etienneroesch
 project_repository: project-pages
-disqus_shortname: project-pages
-g-analytics: UA-4147363-5 #UA-75881392-1
+disqus_shortname: eroesch 
+g-analytics: UA-4147363-5
 altmetric: true
 
 # Build settings
