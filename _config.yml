@@ -2,12 +2,12 @@
 title: "dr. Etienne B. Roesch   |   Cognitive Scientist"
 description: "Cognitive scientist | Stats aficionado | Engaged human being"
 #description: "Brain geek, Stats aficionado, Passionate scientist and futurist, Dedicated supervisor, Engaged human being, Loving father, Devoted husband and cheese lover"
-url: "https://etienneroes.ch"
+url: "http://etienneroes.ch/"
 
 
 
 # Secondary Parameters
-baseurl: "project-pages"
+baseurl: "project-pages/"
 header-img: img/home-bg.png
 headercolor: "#000000"
 #headercolor: "#FFFFFF"
@@ -43,7 +43,7 @@ defaults:
 # Prose Settings
 prose:
   ignore: ['feed.xml', '/stl', '/ply', '/js', '/plugin', '/lib', '/projectors', '_layouts', '/_includes', 'Gruntfile.js', 'package.json', 'proselinks.jsonp', 'ppanchor.matin', '.gitignore', '/search', '/css', '/img', 'favicon.png','_data/*.json','LICENSES.md','README.md','colorscheme.scss','members.html','mentions.html','index.html']
-  siteurl: 'https://etienneroes.ch'
+  siteurl: 'http://etienneroes.ch'
   ispp: true
   media: 'img'
   metadata:
@@ -108,7 +108,7 @@ prose:
       - name: "horizontal"
         field:
           element: "hidden"
-          value: </section></section><section markdown="1" data-background="https://etienneroes.ch/project-pages/img/slidebackground.png"><section markdown="1">
+          value: </section></section><section markdown="1" data-background="http://etienneroes.ch/project-pages/img/slidebackground.png"><section markdown="1">
       - name: "vertical"
         field:
           element: "hidden"
@@ -116,7 +116,7 @@ prose:
       - name: "slideinit"
         field:
           element: "hidden"
-          value: <section markdown="1" data-background="https://etienneroes.ch/project-pages/img/slidebackground.png"><section markdown="1">
+          value: <section markdown="1" data-background="http://etienneroes.ch/project-pages/img/slidebackground.png"><section markdown="1">
       - name: "theme"
         field:
           element: "select"
