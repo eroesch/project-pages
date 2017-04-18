@@ -7,7 +7,7 @@ url: "https://etienneroes.ch"
 
 
 # Secondary Parameters
-baseurl: "/project-pages"
+baseurl: "project-pages"
 header-img: img/home-bg.png
 headercolor: "#000000"
 #headercolor: "#FFFFFF"
