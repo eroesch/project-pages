@@ -2,16 +2,16 @@
 title: "dr. Etienne B. Roesch   |   Cognitive Scientist"
 description: "Cognitive scientist | Stats aficionado | Engaged human being"
 #description: "Brain geek, Stats aficionado, Passionate scientist and futurist, Dedicated supervisor, Engaged human being, Loving father, Devoted husband and cheese lover"
-url: "http://etienneroes.ch/"
+url: "http://etienneroes.ch"
 
 
 
 # Secondary Parameters
-baseurl: "project-pages/"
+baseurl: "project-pages"
 header-img: img/home-bg.png
 headercolor: "#000000"
 #headercolor: "#FFFFFF"
-logo: /project-pages/img/logos/tilde.png
+logo: project-pages/img/logos/tilde.png
 
 # Tertiary Parameters
 github_username:  eroesch
