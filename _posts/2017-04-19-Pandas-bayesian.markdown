@@ -6,6 +6,6 @@ tags: 		jupyter workflows template
 subtitle:   Showcasing Pandas on-the-fly computation capabilities
 category:  project1
 
-notebookfilename: intro
+notebookfilename: bayesian
 visualworkflow: true
 ---
