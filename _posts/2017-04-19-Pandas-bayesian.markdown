@@ -7,5 +7,5 @@ subtitle:   Showcasing Pandas on-the-fly computation capabilities
 category:  project1
 
 notebookfilename: bayesian
-visualworkflow: true
+visualworkflow: false
 ---
