@@ -180,6 +180,7 @@ layout: default
 
 {% if outputitem[0] contains "image/" %}
 <img src="data:{{outputitem[0]}};base64, {{ outputitem[1] }}">
+<img src="data:{{outputitem[0]}};base64, {{ outputitem[1] }}">
 {% endif %}
 
 {% endfor %}
