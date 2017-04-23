@@ -174,12 +174,13 @@ layout: default
 
 {% for outputitem in output.data %}
 
-    {% if outputitem[0] contains "stdout" %}
-	{{ outputitem[1] }}
+    {% if outputitem[0] contains "text" %}
+	{% for outputitemtext outputitem[1] %}
+	    {{ outputitemtext }}<br />
+	{% endfor %}
     {% endif %}
 
 {% if outputitem[0] contains "image/" %}
-<img src="data:{{outputitem[0]}};base64, {{ outputitem[1] }}">
 <img src="data:{{outputitem[0]}};base64, {{ outputitem[1] }}">
 {% endif %}
 
