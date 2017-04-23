@@ -172,13 +172,15 @@ layout: default
 
 {% for output in cell.outputs  %}
 
-{% for outputitem in output.data %}
-
-    {% if outputitem[0] contains "stdout" %}
+{% for outputitem in output.stdout %}
+{% if outputitem[2] contains "text" %}
 	{% for outputitemtext in outputitem[2] %}
 	    {{ outputitemtext }}<br />
 	{% endfor %}
     {% endif %}
+    {% endfor %}
+
+{% for outputitem in output.data %}
 
 {% if outputitem[0] contains "image/" %}
 <img src="data:{{outputitem[0]}};base64, {{ outputitem[1] }}">
