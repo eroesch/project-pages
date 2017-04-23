@@ -175,7 +175,7 @@ layout: default
 {% for outputitem in output.data %}
 
     {% if outputitem[0] contains "text" %}
-	{% for outputitemtext outputitem[1] %}
+	{% for outputitemtext in outputitem[1] %}
 	    {{ outputitemtext }}<br />
 	{% endfor %}
     {% endif %}
