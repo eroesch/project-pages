@@ -174,8 +174,8 @@ layout: default
 
 {% for outputitem in output.data %}
 
-    {% if outputitem[0] contains "text" %}
-	{% for outputitemtext in outputitem[1] %}
+    {% if outputitem[0] contains "stdout" %}
+	{% for outputitemtext in outputitem[2] %}
 	    {{ outputitemtext }}<br />
 	{% endfor %}
     {% endif %}
