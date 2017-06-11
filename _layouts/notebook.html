@@ -183,6 +183,16 @@ layout: default
 </p>
 
 {% for outputitem in output.data %}
+
+{% if outputitem[0] contains "text/" %}
+<!--<span style="font-size:14px; font-family: Menlo,Monaco,Consolas,'Courier New',monospace; color:black;">{{ outputitem[1] }}</span>-->
+<p>
+{% for line in outputitem[1] %}
+<div style="font-size:14px; font-family: Menlo,Monaco,Consolas,'Courier New',monospace; color:black;">{{ line }}</div>
+{% endfor %}
+</p>
+{% endif %}
+
 {% if outputitem[0] contains "image/" %}
 <img src="data:{{outputitem[0]}};base64, {{ outputitem[1] }}">
 {% endif %}
