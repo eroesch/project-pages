@@ -156,49 +156,48 @@ layout: default
 
 {% assign notebookadress = page.notebookfilename %}
 
+
+<!-- capture -->
 {% capture Notebook %}
+
 {% for cell in site.data[notebookadress].cells %}
+
+
 {% case cell.cell_type %}
 
 {% when 'markdown' %}
-
 {{ cell.source }}
 
-{% when 'code' %}
 
+{% when 'code' %}
 {% highlight python %}
 {{ cell.source }}
 {% endhighlight %}
 
 {% for output in cell.outputs  %}
 
-{% if outputitem[0] contains "text" %}
-
-	{% for outputitemtext in outputitem[0] %}
-		{% for outputitemtextitem in outputitemtext[2] %}
-			{% for outputitemtextitemhmm in outputitemtextitem %}
-				{{ outputitemtextitemhmm }}
-			{% endfor %}
-		{% endfor %}
-	{% endfor %}
-
-{% endif %}
+<p>
+{% for outputitem in output.text %}
+<div style="font-size:14px; font-family: Menlo,Monaco,Consolas,'Courier New',monospace; color:black;">{{ outputitem }}</div>
+{% endfor %}
+</p>
 
 {% for outputitem in output.data %}
-
 {% if outputitem[0] contains "image/" %}
 <img src="data:{{outputitem[0]}};base64, {{ outputitem[1] }}">
-
 {% endif %}
+{% endfor %}
+
 
 {% endfor %}
 
-{% endfor %}
 
 {% endcase %}
 
 {% endfor %}
+
 {% endcapture %}
+<!-- capture -->
 
 {% if page.visualworkflow == true %}
 <script src="{{ site.baseurl }}/js/mermaid.min.js"></script>
