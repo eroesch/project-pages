@@ -10,7 +10,7 @@
     **The problem:** Given timeseries data representing the connection status for a device, coded {-1, 0, 1, 2}, what is the probability that the device be in any given state, for a given day and a given half hour?
 
 
-    [The solution:] I first extract the data and use Pandas to chunk and label the data for any given half hour in the past, and then use this subset of data to compute the probability for all four possible states."
+    **The solution:** I first extract the data and use Pandas to chunk and label the data for any given half hour in the past, and then use this subset of data to compute the probability for all four possible states. Plotting this with stacked histogram gives a nice representation of how, for a give half hour, the device can be in several states."
    ]
   },
   {
