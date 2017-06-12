@@ -4,7 +4,7 @@ title:      Pandas meets probabilities
 author:     dr. Etienne B. Roesch
 tags: 		jupyter pandas probabilities
 subtitle:   Showcasing Pandas on-the-fly computation capabilities to calculate probabilities on timeseries.
-category:  project1
+category:  eegfmri
 
 notebookfilename: bayesian
 visualworkflow: false
