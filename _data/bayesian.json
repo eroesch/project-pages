@@ -6,6 +6,7 @@
    "source": [
     "Pandas is extremely good at manipulating data. It can also compute new information on the fly. In this example, I compute the probability that a variable (called connection_status) be of values {-1, 0, 1, 2} given past values in a timeseries, for the same half hour, every week on the same day.
 
+
     In other words"
    ]
   },
