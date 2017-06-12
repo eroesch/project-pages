@@ -4,7 +4,7 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "tl;dr Pandas is extremely good at manipulating data. It can also compute new information on the fly. In this example, I compute the probability that a variable (called connection_status) be of values {-1, 0, 1, 2} given past values in a timeseries, for the same half hour, every week on the same day.
+    "_tl;dr_ Pandas is extremely good at manipulating data. It can also compute new information on the fly. In this example, I compute the probability that a variable (called connection_status) be of values {-1, 0, 1, 2} given past values in a timeseries, for the same half hour, every week on the same day.
 
 
     The problem: Given timeseries data representing the connection status for a device, coded {-1, 0, 1, 2}, what is the probability that the device be in any given state, for a given day and a given half hour?
