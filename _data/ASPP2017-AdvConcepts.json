@@ -1,0 +1,1834 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "skip"
+    }
+   },
+   "source": [
+    "**About this notebook**\n",
+    "\n",
+    "This notebook was prepared as a talk, for the 2017 edition of <a href=\"http://python.g-node.org\">http://python.g-node.org</a>, the renowned Advanced Scientific Programming in Python summer school (Happy 10th Anniversary!!). The layout has been optimised for this website, but it might still read like a presentation, and not a one-threaded blog post.\n",
+    "\n",
+    "I gratefully acknowledge the efforts of the entire Python community, which produced great documentation I largely consumed to create this notebook; a list of which can be found at the end of the notebook. If I have missed anyone, apologies, let me know and I'll add you to the list!\n",
+    "\n",
+    "Although you should be able to run the notebook straight out of the box, bear in mind that it was designed to work in conjunction with the following nbextensions:\n",
+    "* RISE by <a style=\"text-decoration: underline;\" href=\"https://github.com/damianavila/RISE\">https://github.com/damianavila/RISE</a> (enables the slideshow)\n",
+    "* Runtools by <a style=\"text-decoration: underline;\" href=\"https://github.com/ipython-contrib/jupyter_contrib_nbextensions/wiki/Runtools\">https://github.com/ipython-contrib/jupyter_contrib_nbextensions/wiki/Runtools</a> (runs the entire notebook regardless of exceptions thrown on the way, as we will be covering recovering from errors)\n",
+    "\n",
+    "The repository also contains exercises, with and without solutions, which I borrowed from last year's edition of the summer school.\n",
+    "\n",
+    "I would love to hear how you used this work! Don't hesitate to get in touch!\n",
+    "\n",
+    "Etienne\n",
+    "\n",
+    "<center><a href=\"https://twitter.com/@etienneroesch\"><span class=\"fa-stack fa-lg\">\n",
+    "<i class=\"fa fa-circle fa-stack-2x\"></i>\n",
+    "<i class=\"fa fa-twitter fa-stack-1x fa-inverse\"></i></span></a> <a href=\"http://etienneroes.ch\"><span class=\"fa-stack fa-lg\">\n",
+    "<i class=\"fa fa-circle fa-stack-2x\"></i>\n",
+    "<i class=\"fa fa-home fa-stack-1x fa-inverse\"></i></span></a> <a href=\"http://github.com/eroesch\"><span class=\"fa-stack fa-lg\">\n",
+    "<i class=\"fa fa-circle fa-stack-2x\"></i>\n",
+    "<i class=\"fa fa-github fa-stack-1x fa-inverse\"></i></span></a>\n",
+    "</center>"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "&nbsp;"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "skip"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Python version 3.6.1 |Anaconda 4.4.0 (x86_64)| (default, May 11 2017, 13:04:09) \n",
+      "[GCC 4.2.1 Compatible Apple LLVM 6.0 (clang-600.0.57)]\n"
+     ]
+    }
+   ],
+   "source": [
+    "import sys\n",
+    "print('Python version ' + sys.version)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "&nbsp;"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "collapsed": true,
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "# Iterators, generators, decorators, and context managers\n",
+    "\n",
+    "Etienne B. Roesch, University of Reading\n",
+    "\n",
+    "<a href=\"http://etienneroes.ch\">http://etienneroes.ch</a>"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "&nbsp;"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "## I am...\n",
+    "\n",
+    "* an old fashioned software engineer\n",
+    "* a cognitive scientist, and passionate interdisciplinarian\n",
+    "    * perception and experience\n",
+    "    * methods (EEG-fMRI, ERG, psychophysics)\n",
+    "    * modelling\n",
+    "* an increasingly bigger data person\n",
+    "  (soon Google Cloud Platform certified)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "&nbsp;"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Take-home message\n",
+    "* _Iterators_ are arcane mechanisms that support loops, and everything else;\n",
+    "\n",
+    "* _Generators_ are kinds of iterators that provide a level of optimisation and interactivity;\n",
+    "\n",
+    "* _Decorators_ are a mechanism to incrementally power-up existing code;\n",
+    "\n",
+    "* _Context managers_ are semantically related to decorators, to manage resources properly."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "&nbsp;"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Iterators"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "An iterator is any Python type that can be used with a _for_ loop.\n",
+    "They implement the _iterator protocol_, which describes implicit methods, like \\_\\_init\\_\\_, to iterate in sets of objects. In Python 3, you find them everywhere, e.g. files, i/o.\n",
+    "See: https://docs.python.org/3.6/whatsnew/2.2.html#pep-234-iterators"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {
+    "collapsed": true,
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "nums = np.arange(2)    # ndarray contains [0, 1]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "0 1 "
+     ]
+    }
+   ],
+   "source": [
+    "for x in nums:\n",
+    "    print(x, end=\" \")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<iterator at 0x1157caf28>"
+      ]
+     },
+     "execution_count": 4,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "iter(nums)             # ndarray is an iterable"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0"
+      ]
+     },
+     "execution_count": 5,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "it = iter(nums)\n",
+    "it.__next__()          # One way to iterate"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "1"
+      ]
+     },
+     "execution_count": 6,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "next(it)    # Another way to iterate"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "ename": "StopIteration",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[0;31mStopIteration\u001b[0m                             Traceback (most recent call last)",
+      "\u001b[0;32m<ipython-input-7-fad128c8b2df>\u001b[0m in \u001b[0;36m<module>\u001b[0;34m()\u001b[0m\n\u001b[0;32m----> 1\u001b[0;31m \u001b[0mnext\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mit\u001b[0m\u001b[0;34m)\u001b[0m    \u001b[0;31m# Raises StopIteration exception\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m",
+      "\u001b[0;31mStopIteration\u001b[0m: "
+     ]
+    }
+   ],
+   "source": [
+    "next(it)    # Raises StopIteration exception"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "-"
+    }
+   },
+   "source": [
+    "More at: <a href=\"http://www.scipy-lectures.org/intro/language/exceptions.html#exceptions\">http://www.scipy-lectures.org/intro/language/exceptions.html#exceptions</a>"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "&nbsp;"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Example\n",
+    "\n",
+    "*Leonardo Filius Bonacci (1175-1245)*, aka Leonardo Fibonacci, defines the _recurrence relation_ that now bears his name and fuels conspiracy theorists.\n",
+    "\n",
+    "<center>$F_{n} = F_{n-1} + F_{n-2}$ given $F_{0} = 0, F_{1} = 1$</center>"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "<img src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/FibonacciSpiral.svg/354px-FibonacciSpiral.svg.png\">"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "&nbsp;"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "0 1 1 2 3 5 8 13 21 "
+     ]
+    }
+   ],
+   "source": [
+    "class Fib:\n",
+    "    '''Iterator to calculate the Fibonacci series'''\n",
+    "\n",
+    "    def __init__(self, max):\n",
+    "        self.max = max\n",
+    "\n",
+    "    def __iter__(self):    # defines initial conditions\n",
+    "        self.a = 0\n",
+    "        self.b = 1\n",
+    "        return self\n",
+    "\n",
+    "    def __next__(self):    # defines behaviour for next()\n",
+    "        fib = self.a\n",
+    "        if fib > self.max:\n",
+    "            raise StopIteration # is caught when in _for_ loop\n",
+    "        temp_b = self.a + self.b\n",
+    "        self.a = self.b\n",
+    "        self.b = temp_b\n",
+    "        return fib\n",
+    "\n",
+    "# 33rd degree in Freemason Antient & Accepted Scottish Rite\n",
+    "for i in Fib(33):\n",
+    "    print(i, end=' ')   # literally calls the __next__() method"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "&nbsp;"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Generators"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "Generators (_generator-iterators_ as they are called) is a mechanism to simplify this process. Python provides the _yield_ keyword to define generators, which takes care of \\_\\_iter\\_\\_ and \\_\\_next\\_\\_ for you. See: <a href=\"https://www.python.org/dev/peps/pep-0255/\">https://www.python.org/dev/peps/pep-0255/</a>"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "0 1 1 2 3 5 8 13 21 "
+     ]
+    }
+   ],
+   "source": [
+    "def fib_without_generator_iterator(max):\n",
+    "    numbers = []          # Needs to return an array of values\n",
+    "    a, b = 0, 1           # a = 0  and  b = 1\n",
+    "    while a < max:\n",
+    "        numbers.append(a)\n",
+    "        a, b = b, a + b   # Evalute right-hand side and assign\n",
+    "    return numbers        # Returns full list of numbers\n",
+    "\n",
+    "for i in fib_without_generator_iterator(33):\n",
+    "    print(i, end=\" \")     # iterates through array of values"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "In real life problems, this way of doing things is problematic because it forces us to compute all numbers in turn and to store everything in one go."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "    _yield_ expression_list\n",
+    "\n",
+    "_yield_ does something similar to _return_:\n",
+    "* _return_ gives back control to the caller function, and returns some content;\n",
+    "* _yield_ freezes execution temporarily, stores current context, and returns some content to .\\_\\_next\\_\\_()'s caller;\n",
+    "\n",
+    "_yield_ saves local state and variables, instruction pointer and internal evaluation stack; i.e. enough information so that .\\_\\_next\\_\\_() behaves like an external call."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "0 1 1 2 3 5 8 13 21 "
+     ]
+    }
+   ],
+   "source": [
+    "def fib_with_yield(max):\n",
+    "    '''fib function using yield'''\n",
+    "    a, b = 0, 1          # a = 0  and  b = 1\n",
+    "    while a < max:\n",
+    "        yield a          # freezes execution, returns current a\n",
+    "        a, b = b, a + b  # a = b  and  b = a + b\n",
+    "\n",
+    "for i in fib_with_yield(33):\n",
+    "    print(i, end=\" \")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<generator object fib_with_yield at 0x11583ebf8>"
+      ]
+     },
+     "execution_count": 11,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "my_masonic_secret = fib_with_yield(33)\n",
+    "my_masonic_secret"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0"
+      ]
+     },
+     "execution_count": 12,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "next(my_masonic_secret)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "1"
+      ]
+     },
+     "execution_count": 13,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "next(my_masonic_secret)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "1"
+      ]
+     },
+     "execution_count": 14,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "next(my_masonic_secret)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "2"
+      ]
+     },
+     "execution_count": 15,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "next(my_masonic_secret)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "... and so on."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "Python's _list comprehension_, with [..], computes everything at once and can take a lot of memory."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "-"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "[0, 1, 4, 9, 16, 25, 36, 49, 64, 81]"
+      ]
+     },
+     "execution_count": 16,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "squares = [i**2 for i in range(10)]\n",
+    "squares"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "Generator expressions, with (..), are computed _on demand_."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "-"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<generator object <genexpr> at 0x10a191e60>"
+      ]
+     },
+     "execution_count": 4,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "squares = (i**2 for i in range(10))\n",
+    "squares"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "-"
+    }
+   },
+   "source": [
+    "&nbsp;"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "On-demand calculation is important for the streamed processing of big amount of data; where the size of the data is uncertain, values of parameters are changing, etc, or when the processing steps might take a long time, yields errors or enter infinite loops.\n",
+    "\n",
+    "Generators are also an easier way to handle callbacks, and can be used to simulate concurrency.\n",
+    "\n",
+    "See: <a href=\"https://www.python.org/dev/peps/pep-0342/\">https://www.python.org/dev/peps/pep-0342/</a>"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Example\n",
+    "Bash pipeline to count the number of characters, omitting whitespaces, per line, in a given file:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 18,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "-"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "5 41 15 14 21 1 28 11 1 "
+     ]
+    }
+   ],
+   "source": [
+    "!sed 's/ˆ//g' ./custom.css | tr -d ' ' | awk '{ printf \"%i \", length($0); }'\n",
+    "# Noticed the magic \"!\"? Type %lsmagic in a cell to learn more\n",
+    "# https://blog.dominodatalab.com/lesser-known-ways-of-using-notebooks/"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "or equivalent* processing pipeline using native generators (alt. use http://toolz.readthedocs.io/):"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 19,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "-"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "6 42 16 15 22 2 29 12 2 "
+     ]
+    }
+   ],
+   "source": [
+    "my_custom_css = open(\"./custom.css\")\n",
+    "line_stripped = (line.replace(\" \", \"\") for line in my_custom_css)\n",
+    "size_line = (len(line) for line in line_stripped)\n",
+    "for i in size_line:\n",
+    "    print(i, end=\" \")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "-"
+    }
+   },
+   "source": [
+    "*: notdfsdf exactly the same because _sed_ strips end of line carriages.<br><br><br>"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "&nbsp;"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "In your research, you may only need to analyse one single .csv file. More likely, you will be faced with increasingly bigger and more complex data, leaning towards so-called \"big data\", whatever that actually is.<br><br>\n",
+    "\n",
+    "This data won't fit in your workspace, may be \"live\" and constantly changing, and will require real-time or batch analysis methods; e.g., you won't be able to store raw data, but will have to filter it, compute \"metrics\", like averages, standard deviations, to then make a decision about what to do with the data.<br><br>\n",
+    "\n",
+    "You'll enter the realm of big data techniques, which will attempt to decouple data handling from analysis, and pipeline steps of preprocessing to ease analyses proper.<br><br>\n",
+    "\n",
+    "Keywords: dataflow, processing pipelines and stream processors, map reduce, lambda & kappa architectures, dremmel; e.g., hadoop.<br><br>"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "-"
+    }
+   },
+   "source": [
+    "<br>"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "You can simulate concurrency, by interacting with instantiated (currently alive) functions.<br><br>"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 20,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "-"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "I'm currently processing: Hello\n",
+      "I'm currently processing: World\n"
+     ]
+    }
+   ],
+   "source": [
+    "def receiver():\n",
+    "    while True:\n",
+    "        item = yield\n",
+    "        print(\"I'm currently processing:\", item)\n",
+    "        \n",
+    "recv = receiver()   # Instantiate function\n",
+    "next(recv)          # Starts function, alt. recv.send(None)\n",
+    "recv.send(\"Hello\")  # Python's .send() to function communicate..\n",
+    "recv.send(\"World\")  # ..with the instantiated object"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 21,
+   "metadata": {
+    "collapsed": true,
+    "slideshow": {
+     "slide_type": "-"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "recv.close()        # Obviously, clean up after yourself"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Generator-iterator cheatsheet\n",
+    "&nbsp;\n",
+    "<br>\n",
+    "test"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true,
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "def my_generator():\n",
+    "    ...\n",
+    "    item = yield\n",
+    "    ...\n",
+    "    value = do_something(item)\n",
+    "    ...\n",
+    "    yield value   # return value\n",
+    "\n",
+    "\n",
+    "gen = my_generator()\n",
+    "\n",
+    "next(gen)                 # Starts generator and advances to _yield_\n",
+    "value = gen.send(item)    # Sends and receives stuff\n",
+    "gen.close()               # Terminates\n",
+    "gen.throw(exc, val, tb)   # Raises exception\n",
+    "result = yield from gen   # Handles callback and returns content"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "See: <a href=\"https://www.python.org/dev/peps/pep-0342/\">https://www.python.org/dev/peps/pep-0342/</a>"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "&nbsp;"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Decorators"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "Functions are objects themselves."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 22,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Hello world!\n"
+     ]
+    }
+   ],
+   "source": [
+    "def shout(word=\"hello world\"):\n",
+    "    return word.capitalize() + \"!\"\n",
+    "print(shout())"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 23,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Hello world!\n"
+     ]
+    }
+   ],
+   "source": [
+    "yell = shout\n",
+    "print(yell())"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 24,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "name 'shout' is not defined\n",
+      "Hello world!\n"
+     ]
+    }
+   ],
+   "source": [
+    "del shout\n",
+    "try:     # this is how you catch an Exception\n",
+    "    print(shout())      # This won't work\n",
+    "except NameError as e:\n",
+    "    print(e)  \n",
+    "print(yell())           # But this still works"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "Therefore, functions can be defined inside other functions."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 25,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "hello world...\n"
+     ]
+    }
+   ],
+   "source": [
+    "def languaging():\n",
+    "    def whisper(word=\"Hello world\"):\n",
+    "        return word.lower() + \"...\"\n",
+    "    print(whisper())\n",
+    "languaging()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 26,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "name 'whisper' is not defined\n"
+     ]
+    }
+   ],
+   "source": [
+    "try:\n",
+    "    print(whisper())      # is outside the scope!\n",
+    "except NameError as e:\n",
+    "    print(e)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 27,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "<function languaging.<locals>.shout at 0x115861488>\n"
+     ]
+    }
+   ],
+   "source": [
+    "def languaging(type=\"shout\"):\n",
+    "    def shout(word=\"hello world\"):\n",
+    "        return word.capitalize() + \"!\"\n",
+    "    \n",
+    "    def whisper(word=\"hello world\"):\n",
+    "        return word.lower() + \"...\"\n",
+    "    \n",
+    "    if type == \"shout\":\n",
+    "        return shout\n",
+    "    else:\n",
+    "        return whisper\n",
+    "\n",
+    "speak = languaging()\n",
+    "print(speak)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 28,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Hello world!\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(speak())"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 29,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "hello world...\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(languaging(\"whisper\")())"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "If functions, _as objects_, can be returned, they can also be arguments!"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 30,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Ah, the way we've always done analysis.\n"
+     ]
+    }
+   ],
+   "source": [
+    "def my_good_old_analysis():\n",
+    "    print(\"Ah, the way we've always done analysis.\")\n",
+    "my_good_old_analysis()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 31,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "!!! You should not be using this function.\n",
+      "Ah, the way we've always done analysis.\n",
+      "!!! Please, don't do it.\n"
+     ]
+    }
+   ],
+   "source": [
+    "def deprecated(my_function):\n",
+    "    def wrapper():\n",
+    "        print(\"!!! You should not be using this function.\")\n",
+    "        my_function()\n",
+    "        print(\"!!! Please, don't do it.\")\n",
+    "    return wrapper\n",
+    "my_good_old_analysis = deprecated(my_good_old_analysis)\n",
+    "my_good_old_analysis()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "And this is *exactely* what _decorators_ do!"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 32,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "!!! You should not be using this function.\n",
+      "Aaaaah, please kill me.\n",
+      "!!! Please, don't do it\n"
+     ]
+    }
+   ],
+   "source": [
+    "def deprecated(my_function):\n",
+    "    def wrapper():\n",
+    "        print(\"!!! You should not be using this function.\")\n",
+    "        my_function()\n",
+    "        print(\"!!! Please, don't do it\")\n",
+    "    return wrapper\n",
+    "\n",
+    "@deprecated  # <-- ain't this a pretty decorator?\n",
+    "def my_even_older_analysis():\n",
+    "    print(\"Aaaaah, please kill me.\")\n",
+    "\n",
+    "my_even_older_analysis()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "Some in-built Python decorators will ease _abstraction_ (only expose relevant information) and _encapsulation_ (combine data and functions in a usable unit). See: https://docs.python.org/3.6/howto/descriptor.html"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 33,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "-"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "1000\n"
+     ]
+    }
+   ],
+   "source": [
+    "class My_class:\n",
+    "    def __init__(self,x):\n",
+    "        self.x = x\n",
+    "\n",
+    "    @property                # In-built Python decorator\n",
+    "    def x(self):             # x is publicly accessible \n",
+    "        return self.__x      # __x is private\n",
+    "\n",
+    "    @x.setter                # \".setter\" in-built Python decorator\n",
+    "    def x(self, x):\n",
+    "        if x < 0:            # Implementation is hidden to end-users\n",
+    "            self.__x = 0     # __x actually stores the data \n",
+    "        elif x > 1000:       # \"__\" is warning to end-users\n",
+    "            self.__x = 1000  # that things under the hood might\n",
+    "        else:                # change in future releases\n",
+    "            self.__x = x\n",
+    "            \n",
+    "my_instance = My_class(10000)\n",
+    "print( my_instance.x )"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 34,
+   "metadata": {
+    "collapsed": true,
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "def bread(my_function):\n",
+    "    def wrapper():\n",
+    "        print(\" /''''''\\ \")\n",
+    "        my_function()\n",
+    "        print(\" \\______/ \")\n",
+    "    return wrapper\n",
+    "\n",
+    "def ingredients(my_function):\n",
+    "    def wrapper():\n",
+    "        print(\"@Tomatoes@\")\n",
+    "        my_function()\n",
+    "        print(\"~~Salad~~\")\n",
+    "    return wrapper"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 35,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "-"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      " /''''''\\ \n",
+      "@Tomatoes@\n",
+      "---Ham---\n",
+      "~~Salad~~\n",
+      " \\______/ \n"
+     ]
+    }
+   ],
+   "source": [
+    "@bread         # Order matters\n",
+    "@ingredients   #\n",
+    "def sandwich(food=\"---Ham---\"):\n",
+    "    print(food)\n",
+    "sandwich()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Context managers"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "Context managers are semantically related to decorators.\n",
+    "\n",
+    "They aim primarily to help you manage resources properly, i.e., groom your memory, avoid consumer bottlenecks, clean up after yourself, maintain livelihood of connections (db), etc, and other sensible things."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 36,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "ERROR:root:Internal Python error in the inspect module.\n",
+      "Below is the traceback from this internal error.\n",
+      "\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Traceback (most recent call last):\n",
+      "  File \"//anaconda/lib/python3.6/site-packages/IPython/core/interactiveshell.py\", line 2881, in run_code\n",
+      "    exec(code_obj, self.user_global_ns, self.user_ns)\n",
+      "  File \"<ipython-input-36-bfc1ac5e0354>\", line 3, in <module>\n",
+      "    files.append(open(\"how_to_mess_up_my_memory.txt\", \"w\"))\n",
+      "OSError: [Errno 24] Too many open files: 'how_to_mess_up_my_memory.txt'\n",
+      "\n",
+      "During handling of the above exception, another exception occurred:\n",
+      "\n",
+      "Traceback (most recent call last):\n",
+      "  File \"//anaconda/lib/python3.6/site-packages/IPython/core/interactiveshell.py\", line 1821, in showtraceback\n",
+      "    stb = value._render_traceback_()\n",
+      "AttributeError: 'OSError' object has no attribute '_render_traceback_'\n",
+      "\n",
+      "During handling of the above exception, another exception occurred:\n",
+      "\n",
+      "Traceback (most recent call last):\n",
+      "  File \"//anaconda/lib/python3.6/site-packages/IPython/core/ultratb.py\", line 1132, in get_records\n",
+      "  File \"//anaconda/lib/python3.6/site-packages/IPython/core/ultratb.py\", line 313, in wrapped\n",
+      "  File \"//anaconda/lib/python3.6/site-packages/IPython/core/ultratb.py\", line 358, in _fixed_getinnerframes\n",
+      "  File \"//anaconda/lib/python3.6/inspect.py\", line 1453, in getinnerframes\n",
+      "  File \"//anaconda/lib/python3.6/inspect.py\", line 1411, in getframeinfo\n",
+      "  File \"//anaconda/lib/python3.6/inspect.py\", line 666, in getsourcefile\n",
+      "  File \"//anaconda/lib/python3.6/inspect.py\", line 695, in getmodule\n",
+      "  File \"//anaconda/lib/python3.6/inspect.py\", line 679, in getabsfile\n",
+      "  File \"//anaconda/lib/python3.6/posixpath.py\", line 374, in abspath\n",
+      "OSError: [Errno 24] Too many open files\n"
+     ]
+    },
+    {
+     "ename": "OSError",
+     "evalue": "[Errno 24] Too many open files: 'how_to_mess_up_my_memory.txt'",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m"
+     ]
+    }
+   ],
+   "source": [
+    "files = []\n",
+    "for x in range(100000):\n",
+    "    files.append(open(\"how_to_mess_up_my_memory.txt\", \"w\"))\n",
+    "#.. at this point of the notebook, I have messed up my memory\n",
+    "# and won't be able to open any more files"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "In real life, you are dealing with finite resources. When you allocate some resource to a particular task, you need to make sure you use only what you need, and when you are done, you release it for other task/people to use."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 37,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "<_io.TextIOWrapper name='./custom.css' mode='r' encoding='UTF-8'>\n",
+      "Clean up, or you'll mess up your memory!\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(my_custom_css)       # Remember me? (see Section Generators)\n",
+    "if not my_custom_css.closed:\n",
+    "    print(\"Clean up, or you'll mess up your memory!\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 38,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "ename": "NameError",
+     "evalue": "name 'my_custom_css' is not defined",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[0;31mNameError\u001b[0m                                 Traceback (most recent call last)",
+      "\u001b[0;32m<ipython-input-38-40ecda7ea446>\u001b[0m in \u001b[0;36m<module>\u001b[0;34m()\u001b[0m\n\u001b[1;32m      1\u001b[0m \u001b[0mmy_custom_css\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mclose\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m)\u001b[0m     \u001b[0;31m# Always clean up after yourself!\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      2\u001b[0m \u001b[0;32mdel\u001b[0m \u001b[0mmy_custom_css\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m----> 3\u001b[0;31m \u001b[0mmy_custom_css\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m",
+      "\u001b[0;31mNameError\u001b[0m: name 'my_custom_css' is not defined"
+     ]
+    }
+   ],
+   "source": [
+    "my_custom_css.close()     # Always clean up after yourself!\n",
+    "del my_custom_css\n",
+    "my_custom_css"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "That's primarily what _context managers_ do for you."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 39,
+   "metadata": {
+    "collapsed": true,
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "# First, I need to clean up the mess I created by opening\n",
+    "# 100K files, otherwise I won't be able to open files\n",
+    "files = []\n",
+    "\n",
+    "#for name in dir():\n",
+    "#    if not name.startswith('files'):\n",
+    "#        del globals()[name]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 40,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "7 49 19 18 25 2 30 13 2 "
+     ]
+    }
+   ],
+   "source": [
+    "with open(\"./custom.css\") as my_custom_css:\n",
+    "    for line in my_custom_css:\n",
+    "        print(len(line), end=\" \")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 41,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "-"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "It's already closed! Ain't that wonderful?\n"
+     ]
+    }
+   ],
+   "source": [
+    "if not my_custom_css.closed:\n",
+    "    print(\"Clean up, or you'll mess up your memory!\")\n",
+    "else:\n",
+    "    print(\"It's already closed! Ain't that wonderful?\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "That's all there is to it: the _with_.._as_ statement instantiates a variable that is short-lived, in a given scope.\n",
+    "\n",
+    "It automatically calls a number of \"management\" functions for you.\n",
+    "\n",
+    "You'll find context managers for files, locks, threads, database connections, and you can implement your own."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 42,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "100000"
+      ]
+     },
+     "execution_count": 42,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "class File():\n",
+    "    def __init__(self, filename, mode):\n",
+    "        self.filename = filename\n",
+    "        self.mode = mode\n",
+    "\n",
+    "    def __enter__(self):\n",
+    "        self.open_file = open(self.filename, self.mode)\n",
+    "        return self.open_file\n",
+    "\n",
+    "    def __exit__(self, *args):\n",
+    "        self.open_file.close()\n",
+    "\n",
+    "files = []\n",
+    "for _ in range(100000):\n",
+    "    with File('that_shouldnt_mess_up_my_memory.txt', 'w') as myfile:\n",
+    "        files.append(myfile)\n",
+    "len(files)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 43,
+   "metadata": {
+    "collapsed": true,
+    "slideshow": {
+     "slide_type": "-"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "for i in range(len(files)):\n",
+    "    if not files[i].closed:\n",
+    "        print(\"Arrg, files[%i] is not closed!\" % i)\n",
+    "        # Hopefully, there is no output to this cell!! :)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Take-home message\n",
+    "* _Iterators_ are arcane mechanisms that support loops, and everything else;\n",
+    "\n",
+    "* _Generators_ are kinds of iterators that provide a level of optimisation and interactivity;\n",
+    "\n",
+    "* _Decorators_ are a mechanism to incrementally power-up existing code;\n",
+    "\n",
+    "* _Context managers_ are semantically related to decorators, to manage resources properly."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "## Grateful acknowledgements and sources of inspiration\n",
+    "\n",
+    "* The Python Documentation: https://docs.python.org/\n",
+    "* Generators: http://intermediatepythonista.com/python-generators\n",
+    "* Decorators: http://sametmax.com/ for some examples\n",
+    "* Context managers: https://jeffknupp.com/blog/2016/03/07/python-with-context-managers/\n",
+    "* Zbigniew for last year's exercises!"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "## Thanks for your attention!\n",
+    "\n",
+    "\n",
+    "I would love to hear how you used this work! Don't hesitate to get in touch!\n",
+    "\n",
+    "Etienne\n",
+    "\n",
+    "<center><a href=\"https://twitter.com/@etienneroesch\"><span class=\"fa-stack fa-lg\">\n",
+    "<i class=\"fa fa-circle fa-stack-2x\"></i>\n",
+    "<i class=\"fa fa-twitter fa-stack-1x fa-inverse\"></i></span></a> <a href=\"http://etienneroes.ch\"><span class=\"fa-stack fa-lg\">\n",
+    "<i class=\"fa fa-circle fa-stack-2x\"></i>\n",
+    "<i class=\"fa fa-home fa-stack-1x fa-inverse\"></i></span></a> <a href=\"http://github.com/eroesch\"><span class=\"fa-stack fa-lg\">\n",
+    "<i class=\"fa fa-circle fa-stack-2x\"></i>\n",
+    "<i class=\"fa fa-github fa-stack-1x fa-inverse\"></i></span></a>\n",
+    "</center>"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.1"
+  },
+  "livereveal": {
+   "start_slide": "beginning",
+   "theme": "serif",
+   "transition": "default"
+  },
+  "toc": {
+   "colors": {
+    "hover_highlight": "#DAA520",
+    "navigate_num": "#000000",
+    "navigate_text": "#333333",
+    "running_highlight": "#FF0000",
+    "selected_highlight": "#FFD700",
+    "sidebar_border": "#EEEEEE",
+    "wrapper_background": "#FFFFFF"
+   },
+   "moveMenuLeft": true,
+   "nav_menu": {
+    "height": "12px",
+    "width": "252px"
+   },
+   "navigate_menu": true,
+   "number_sections": false,
+   "sideBar": true,
+   "threshold": 4,
+   "toc_cell": false,
+   "toc_position": {
+    "height": "625px",
+    "left": "0px",
+    "right": "1189px",
+    "top": "106px",
+    "width": "235px"
+   },
+   "toc_section_display": "block",
+   "toc_window_display": false,
+   "widenNotebook": false
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}
