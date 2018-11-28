@@ -1,0 +1,190 @@
+---
+layout:     post
+title:      My PGP Public Key
+author:     Etienne Roesch
+header-img:     img/home-bghh.jpg
+tags: 		post pgp security contact
+subtitle:	My PGP Public key.
+category:  project1
+---
+
+
+Etienne Roesch <etienne.roesch@gmail.com> (8A93B65981CD540F)
+
+You can use this key to encrypt and secure our messages, and you can download it [there](img/EtienneRoesch\(81CD540F\)–Public.asc) directly.
+
+To start using it, you'll need to install an OpenPGP software on your computer. Below you'll find a list of possible solutions for your operating system:
+
+macOS https://gpgtools.tenderapp.com/kb/how-to/first-steps-where-do-i-start-where-do-i-begin-setup-gpgtools-create-a-new-key-your-first-encrypted-mail
+Linux https://ssd.eff.org/en/module/how-use-pgp-linux
+Windows https://ssd.eff.org/en/module/how-use-pgp-windows-pc
+iOS https://itunes.apple.com/app/ipgmail/id430780873?mt=8
+Android https://play.google.com/store/apps/details?id=org.sufficientlysecure.keychain
+
+Please import the public key into your local OpenPGP Key-Manager.
+
+Looking forward to exchange snooping-free messages with you.
+
+
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+
+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
+S71m+58sszYNa0GGjmuyBWmNo0yn+RM=
+=qPB9
+-----END PGP PUBLIC KEY BLOCK-----
+
+
+<!-- Start Writing Below in Markdown -->
+
+# Table of Contents
+
+* TOC
+{:toc}
+
+# Basic Functionality
+
+## Headers
+
+# Header 1
+
+## Header 2
+
+### Header 3
+
+## Styling
+
+**Bold**
+
+*Italics*
+
+***Bold and Italics***
+
+## Lists
+
+1. Item 1
+
+2. Item 2
+
+* Unordered Item
+
+  * Sub Item 1
+
+    1. **Bold** Sub Sub Ordered Item
+
+## Links
+
+[In-Line](https://www.google.com)
+
+[I'm a reference-style link 1][1]
+
+[I'm a reference-style link 1][2]
+
+[1]:https://www.mozilla.org
+[2]:http://www.reddit.com
+
+## Images
+
+Hold your pointer clicked over the image to expand the view.
+
+![Description](http://projectpages.github.io/project-pages/img/Logo_Fairy_Tail_right.png)
+
+## Code
+
+Inline `code`.
+
+{% highlight python %}
+import numpy as np
+def hello_world():
+    print('Hello World!'')
+{% endhighlight %}
+
+## MathJax
+
+Use MathJax for Math.
+$$ A = \pi r^2 $$
+
+## Tables
+
+Here | is | a | row!
+|---------|:----------|:----------:|---------:|
+is   |Left|  Center  |Right|
+a    | cut | it | A
+column  | short | B | C
+
+## Quotes
+
+> War does not decide who is *right*, only who is **left**.
+
+## Rule
+
+---
+
+## HTML
+
+Can write the whole post or sections in HTML for very specific needs. [For the advanced user or the code savvy.]
+
+# Advanced Functionality
+
+Head over to the [documentation page](http://projectpages.github.io/ppguide/) for tutorials on some basic html formatting and some extensions you can use for cool stuff like interactive 3D visualizations.
+
+## Color and Alignment
+
+<p align="center">This text is centered.</p>
+
+<p style="color:red">This is a red text with <span style="color:blue">blue</span> and <span style="color:green">green</span> inline text.</p>
+
+# Some Advanced Features
+
+## Data Projector
+
+<embed src="/project-pages/2016/05/02/New-Projector/" height="500px" width="100%">
+
+## STL
+
+<div align="center"><script src="https://embed.github.com/view/3d/projectpages/project-pages/gh-pages/stl/test.stl"></script></div>
