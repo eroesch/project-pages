@@ -11,7 +11,7 @@ category:  project1
 
 Etienne Roesch <etienne.roesch@gmail.com> (8A93B65981CD540F)
 
-You can use this key to encrypt and secure our messages, and you can download it [there](img/EtienneRoesch-81CD540F–Public.asc) directly.
+You can use this key to encrypt and secure our messages, and you can download it [there](http://etienneroes.ch/img/EtienneRoesch-81CD540F–Public.asc) directly.
 
 To start using it, you'll need to install an OpenPGP software on your computer. Below you'll find a list of possible solutions for your operating system:
 
