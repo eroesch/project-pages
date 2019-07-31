@@ -7,7 +7,7 @@ url: "http://etienneroes.ch"
 
 
 # Secondary Parameters
-baseurl: ""
+baseurl: "http://etienneroes.ch"
 header-img: img/home-bg.png
 headercolor: "#000000"
 #headercolor: "#FFFFFF"
