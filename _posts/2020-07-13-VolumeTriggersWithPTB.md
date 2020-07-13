@@ -6,6 +6,6 @@ tags: 		matlab psychtoolbox mri
 subtitle:   Registering MR volume triggers with Psychtoolbox 3
 category:  EEG-fMRI
 
-notebookfilename: volumetriggerswithptb
+notebookfilename: 2020-07-13-volumetriggerswithptb
 visualworkflow: false
 ---
