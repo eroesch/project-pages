@@ -4,21 +4,17 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "`tl;dr` [Pandas](http://pandas.pydata.org/) is extremely good at manipulating data. It can also compute new information on the fly. In this example, I compute the probability that a variable (called connection_status) be of values {-1, 0, 1, 2} given past values in a timeseries, for the same half hour, every week on the same day.
-
-
-    **The problem:** Given timeseries data representing the connection status for a device, coded {-1, 0, 1, 2}, what is the probability that the device be in any given state, for a given day and a given half hour?
-
-
-    **The solution:** I first extract the data and use [Pandas](http://pandas.pydata.org/) to chunk and label the data for any given half hour in the past, and then use this subset of data to compute the probability for all four possible states. Plotting this with [stacked histogram](http://pandas.pydata.org/pandas-docs/stable/visualization.html#histograms) gives a nice representation of how, for a given half hour, the device can be in several states."
+    "`tl;dr` [Pandas](http://pandas.pydata.org/) is extremely good at manipulating data. It can also compute new information on the fly. In this example, I compute the probability that a variable (called connection_status) be of values {-1, 0, 1, 2} given past values in a timeseries, for the same half hour, every week on the same day.\n",
+    "\n",
+    "The problem: Given timeseries data representing the connection status for a device, coded {-1, 0, 1, 2}, what is the probability that the device be in any given state, for a given day and a given half hour?\n",
+    "\n",
+    "The solution: I first extract the data and use [Pandas](http://pandas.pydata.org/) to chunk and label the data for any given half hour in the past, and then use this subset of data to compute the probability for all four possible states. Plotting this with [stacked histogram](http://pandas.pydata.org/pandas-docs/stable/visualization.html#histograms) gives a nice representation of how, for a given half hour, the device can be in several states."
    ]
   },
   {
    "cell_type": "code",
    "execution_count": 1,
-   "metadata": {
-    "collapsed": false
-   },
+   "metadata": {},
    "outputs": [
     {
      "name": "stdout",
@@ -68,9 +64,7 @@
   {
    "cell_type": "code",
    "execution_count": 2,
-   "metadata": {
-    "collapsed": false
-   },
+   "metadata": {},
    "outputs": [
     {
      "name": "stdout",
@@ -91,9 +85,7 @@
   {
    "cell_type": "code",
    "execution_count": 3,
-   "metadata": {
-    "collapsed": false
-   },
+   "metadata": {},
    "outputs": [],
    "source": [
     "# Displays some information about the dataset\n",
@@ -107,9 +99,7 @@
   {
    "cell_type": "code",
    "execution_count": 4,
-   "metadata": {
-    "collapsed": false
-   },
+   "metadata": {},
    "outputs": [
     {
      "name": "stdout",
@@ -132,9 +122,7 @@
   {
    "cell_type": "code",
    "execution_count": 5,
-   "metadata": {
-    "collapsed": false
-   },
+   "metadata": {},
    "outputs": [
     {
      "name": "stdout",
@@ -156,9 +144,7 @@
   {
    "cell_type": "code",
    "execution_count": 6,
-   "metadata": {
-    "collapsed": false
-   },
+   "metadata": {},
    "outputs": [
     {
      "name": "stdout",
@@ -178,9 +164,7 @@
   {
    "cell_type": "code",
    "execution_count": 7,
-   "metadata": {
-    "collapsed": false
-   },
+   "metadata": {},
    "outputs": [],
    "source": [
     "#df2.tail()"
@@ -189,9 +173,7 @@
   {
    "cell_type": "code",
    "execution_count": 8,
-   "metadata": {
-    "collapsed": false
-   },
+   "metadata": {},
    "outputs": [],
    "source": [
     "#ts = group['connection_status']\n",
@@ -202,9 +184,7 @@
   {
    "cell_type": "code",
    "execution_count": 9,
-   "metadata": {
-    "collapsed": false
-   },
+   "metadata": {},
    "outputs": [],
    "source": [
     "#temp = ts.value_counts()\n",
@@ -215,9 +195,7 @@
   {
    "cell_type": "code",
    "execution_count": 10,
-   "metadata": {
-    "collapsed": false
-   },
+   "metadata": {},
    "outputs": [
     {
      "name": "stdout",
@@ -237,9 +215,7 @@
   {
    "cell_type": "code",
    "execution_count": 11,
-   "metadata": {
-    "collapsed": false
-   },
+   "metadata": {},
    "outputs": [
     {
      "data": {
@@ -321,9 +297,7 @@
   {
    "cell_type": "code",
    "execution_count": 12,
-   "metadata": {
-    "collapsed": false
-   },
+   "metadata": {},
    "outputs": [
     {
      "data": {
@@ -373,6 +347,30 @@
    "nbconvert_exporter": "python",
    "pygments_lexer": "ipython2",
    "version": "2.7.12"
+  },
+  "toc": {
+   "colors": {
+    "hover_highlight": "#DAA520",
+    "navigate_num": "#000000",
+    "navigate_text": "#333333",
+    "running_highlight": "#FF0000",
+    "selected_highlight": "#FFD700",
+    "sidebar_border": "#EEEEEE",
+    "wrapper_background": "#FFFFFF"
+   },
+   "moveMenuLeft": true,
+   "nav_menu": {
+    "height": "12px",
+    "width": "252px"
+   },
+   "navigate_menu": true,
+   "number_sections": true,
+   "sideBar": true,
+   "threshold": 4,
+   "toc_cell": false,
+   "toc_section_display": "block",
+   "toc_window_display": true,
+   "widenNotebook": false
   }
  },
  "nbformat": 4,
