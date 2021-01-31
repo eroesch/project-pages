@@ -22,58 +22,58 @@
                     <a href="{{ site.baseurl }}/">Home</a>
                 </li>
                 {% endcomment %}
-                
+
                 <li>
-                	<a href="{{ '/who/' | prepend: site.baseurl }}">Who?</a>
+                    <a href="{{ '/who/' | prepend: site.baseurl }}">Who?</a>
                 </li>
-                
-					<li>
-					<div class="dropdown">
-						<button class="dropbtn">
-						<a href="{{ '/myopenresearch/' | prepend: site.baseurl }}">
-						#myopenresearch
-						</a>
-						</button>
-						<div class="dropdown-content">
-						{% for page in site.pages %}
-							{% if page.url contains "projects/" %}
-								{% if page.title %}
-								<a href="{{ page.url | prepend: site.baseurl }}">{{ page.title }}</a>
-								{% endif %}
-							{% endif %}
-						{% endfor %}
-						</div>
-                	</div>
-                	</li>
-                
-                	<li>
-                		<a href="{{ '/search/' | prepend: site.baseurl }}">Table of content</a>
-                	</li>
-{% comment %}
-				{% for page in site.pages %}
-					{% if page.url contains "projects/" %}
-						{% if page.title %}
-							<li>
-								<a href="{{ page.url | prepend: site.baseurl }}">{{ page.title }}</a>
-							</li>
-						{% endif %}
-               		{% endif %}
-               	{% endfor %}
-{% endcomment %}
-               
-{% comment %}
+
+                <li>
+                    <div class="dropdown">
+                        <button class="dropbtn">
+                            <a href="{{ '/myopenresearch/' | prepend: site.baseurl }}">
+                                #myopenresearch
+                            </a>
+                        </button>
+                        <div class="dropdown-content">
+                            {% for page in site.pages %}
+                                {% if page.url contains "projects/" %}
+                                    {% if page.title %}
+                                        <a href="{{ page.url | prepend: site.baseurl }}">{{ page.title }}</a>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <a href="{{ '/search/' | prepend: site.baseurl }}">Table of content</a>
+                </li>
+                {% comment %}
                 {% for page in site.pages %}
-                	{% if page.url contains "projects/" %}
-                	{% else %}
-                		{% if page.title %}
-							<li>
-								<a href="{{ page.url | prepend: site.baseurl }}">{{ page.title }}</a>
-							</li>
-                		{% endif %}
-                	{% endif %}
+                    {% if page.url contains "projects/" %}
+                        {% if page.title %}
+                            <li>
+                                <a href="{{ page.url | prepend: site.baseurl }}">{{ page.title }}</a>
+                            </li>
+                        {% endif %}
+                    {% endif %}
                 {% endfor %}
-{% endcomment %}
-           
+                {% endcomment %}
+
+                {% comment %}
+                {% for page in site.pages %}
+                    {% if page.url contains "projects/" %}
+                    {% else %}
+                        {% if page.title %}
+                            <li>
+                                <a href="{{ page.url | prepend: site.baseurl }}">{{ page.title }}</a>
+                            </li>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+                {% endcomment %}
+
             </ul>
         </div>
         <!-- /.navbar-collapse -->
